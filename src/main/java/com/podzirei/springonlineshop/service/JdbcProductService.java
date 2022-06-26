@@ -37,9 +37,9 @@ public class JdbcProductService implements ProductService{
         Optional<Product> product =
                 productRepository.findById(id);
 
-        if (!product.isPresent()){
-            return null;
-        }
+//        if (!product.isPresent()){
+//            return null;
+//        }
 
         return product.get();
     }

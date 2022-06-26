@@ -24,6 +24,7 @@ public class Product {
             generator = "product_id_seq"
     )
     private int id;
+
     private String name;
     private double price;
     private LocalDateTime creationDate;
