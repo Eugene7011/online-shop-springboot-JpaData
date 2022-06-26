@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.verify;
@@ -43,16 +44,18 @@ class ProductControllerTest {
 
     @Test
     void findAll() throws Exception {
-        List<Product> productList = new ArrayList<>();
-        productList.add(product);
+        List<Product> productList = Arrays.asList(product);
 
         Mockito.when(productService.findAll())
                 .thenReturn(productList);
 
         mockMvc.perform(get("/products")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("Banana"))
+                .andExpect(jsonPath("$[0].price").value("100.0"))
+                .andExpect(jsonPath("$[0].creationDate").value("-999999999-01-01T00:00:00"))
+                .andExpect(jsonPath("$[0].id").value("1"));
     }
 
     @Test
@@ -84,15 +87,31 @@ class ProductControllerTest {
     }
 
     @Test
-    void findByName() {
+    void findByName() throws Exception {
+        List<Product> productList = Arrays.asList(product);
 
+        Mockito.when(productService.findByName("Banana"))
+                .thenReturn(productList);
+
+        mockMvc.perform(get("/products/search/Banana")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("Banana"))
+                .andExpect(jsonPath("$[0].price").value("100.0"))
+                .andExpect(jsonPath("$[0].creationDate").value("-999999999-01-01T00:00:00"))
+                .andExpect(jsonPath("$[0].id").value("1"));
+
+        verify(productService).findByName("Banana");
     }
 
     @Test
-    void updateProduct() {
+    void updateProduct() throws Exception {
+
     }
 
     @Test
     void deleteProduct() {
+
+
     }
 }

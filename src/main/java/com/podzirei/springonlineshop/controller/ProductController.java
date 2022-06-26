@@ -50,10 +50,9 @@ public class ProductController {
     }
 
     @PutMapping(path = "/products/update")
-    protected void updateProduct(@PathVariable int id,
-                                 @RequestBody Product product) {
+    protected void updateProduct(@RequestBody Product product) {
         logger.info("update {}", product);
-        productService.update(id, product);
+        productService.update(product);
     }
 
     @DeleteMapping(path = "/products/delete/{id}")

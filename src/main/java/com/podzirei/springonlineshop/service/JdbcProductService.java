@@ -45,9 +45,8 @@ public class JdbcProductService implements ProductService{
     }
 
     @Override
-    public void update(Integer id, Product product) {
-        product.setCreationDate(LocalDateTime.now());
-        Product productFromDB = productRepository.findById(id).get();
+    public void update(Product product) {
+        Product productFromDB = findById(product.getId());
 
         if (Objects.nonNull((product.getName())) &&
                 !"".equalsIgnoreCase(product.getName())){
@@ -55,9 +54,10 @@ public class JdbcProductService implements ProductService{
         }
 
         if (Objects.nonNull((product.getPrice())) &&
-                !"".equalsIgnoreCase(String.valueOf(product.getPrice()))){
+                !"".equals(String.valueOf(product.getPrice()))){
             productFromDB.setPrice(product.getPrice());
         }
+        product.setCreationDate(productFromDB.getCreationDate());
 
         productRepository.save(product);
     }
