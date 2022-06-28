@@ -1,6 +1,7 @@
 package com.podzirei.springonlineshop.service;
 
 import com.podzirei.springonlineshop.entity.Product;
+import com.podzirei.springonlineshop.error.ProductNotFoundException;
 import com.podzirei.springonlineshop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,19 +34,19 @@ public class JdbcProductService implements ProductService{
     }
 
     @Override
-    public Product findById(int id) {
+    public Product findById(int id) throws ProductNotFoundException {
         Optional<Product> product =
                 productRepository.findById(id);
 
-//        if (!product.isPresent()){
-//            return null;
-//        }
+        if (!product.isPresent()){
+            throw new ProductNotFoundException("Product is not found");
+        }
 
         return product.get();
     }
 
     @Override
-    public void update(Product product) {
+    public void update(Product product) throws ProductNotFoundException {
         Product productFromDB = findById(product.getId());
 
         if (Objects.nonNull((product.getName())) &&
@@ -63,7 +64,12 @@ public class JdbcProductService implements ProductService{
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws ProductNotFoundException {
+        Optional<Product> product =
+                productRepository.findById(id);
+        if (product.isEmpty()){
+            throw new ProductNotFoundException("Product is not found");
+        }
         productRepository.deleteById(id);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,14 +33,33 @@ class ProductRepositoryTest {
                 .id(1)
                 .build();
 
-        entityManager.persist(product);
+        entityManager.merge(product);
+        entityManager.flush();
     }
 
     @Test
     @DisplayName("")
     public void whenFindById_thenReturnProduct(){
-        product = productRepository.findById(1).get();
-        assertEquals(product.getName(), "Banana");
+        Product expectedProduct = productRepository.findById(1).get();
+        assertEquals(expectedProduct.getPrice(), product.getPrice());
+        assertEquals(expectedProduct.getName(), product.getName());
+        assertEquals(expectedProduct.getCreationDate(), product.getCreationDate());
+    }
+
+    @Test
+    @DisplayName("")
+    public void whenFindByName_thenReturnProduct(){
+        Product expectedProduct = productRepository.findByName("Banana").get(0);
+        assertEquals(expectedProduct.getId(), product.getId());
+        assertEquals(expectedProduct.getName(), product.getName());
+        assertEquals(expectedProduct.getCreationDate(), product.getCreationDate());
+    }
+
+    @Test
+    public void testCustomNativeQuery() {
+        assertEquals(1, productRepository.findAll().size());
+
+        assertNotNull(entityManager);
     }
 
 }

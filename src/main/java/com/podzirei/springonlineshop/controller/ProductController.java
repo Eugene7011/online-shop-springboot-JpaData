@@ -1,7 +1,9 @@
 package com.podzirei.springonlineshop.controller;
 
 import com.podzirei.springonlineshop.entity.Product;
+import com.podzirei.springonlineshop.error.ProductNotFoundException;
 import com.podzirei.springonlineshop.service.ProductService;
+import com.sun.istack.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +30,13 @@ public class ProductController {
     }
 
     @PostMapping(path = "/products/add")
-    protected void addProduct(@RequestBody Product product) {
+    protected void addProduct(@NotNull @RequestBody Product product) {
         logger.info("add product {}", product);
         productService.add(product);
     }
 
     @GetMapping(path = "/products/{id}")
-    public Product findById(@PathVariable int id) {
+    public Product findById(@PathVariable int id) throws ProductNotFoundException {
         Product product = productService.findById(id);
         logger.info("findById {}", product);
 
@@ -50,13 +52,13 @@ public class ProductController {
     }
 
     @PutMapping(path = "/products/update")
-    protected void updateProduct(@RequestBody Product product) {
+    public void updateProduct(@NotNull @RequestBody Product product) throws ProductNotFoundException {
         logger.info("update {}", product);
         productService.update(product);
     }
 
     @DeleteMapping(path = "/products/delete/{id}")
-    protected void deleteProduct(@PathVariable int id) {
+    public void deleteProduct(@PathVariable int id) throws ProductNotFoundException {
         logger.info("delete {}", id);
         productService.delete(id);
     }
