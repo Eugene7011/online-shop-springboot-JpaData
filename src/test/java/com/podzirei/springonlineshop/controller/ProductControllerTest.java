@@ -1,10 +1,7 @@
 package com.podzirei.springonlineshop.controller;
 
 import com.podzirei.springonlineshop.entity.Product;
-import com.podzirei.springonlineshop.error.ProductNotFoundException;
-import com.podzirei.springonlineshop.repository.ProductRepository;
 import com.podzirei.springonlineshop.service.ProductService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,16 +14,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -73,7 +64,7 @@ class ProductControllerTest {
     @Test
     @DisplayName("when Get Request With Incorrect Url Status Not Found Should Return")
     void when_Get_Request_With_Incorrect_Url_Status_Not_Found_Should_Return() throws Exception {
-         mockMvc.perform(get("/mistake")
+        mockMvc.perform(get("/mistake")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -84,11 +75,11 @@ class ProductControllerTest {
         mockMvc.perform(post("/products/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                        {
-                                        "name":"Banana",
-                                        "price":"100",
-                                        "creationDate":"2022-06-16T00:14:44.794951"
-                                        }"""))
+                                {
+                                "name":"Banana",
+                                "price":"100",
+                                "creationDate":"2022-06-16T00:14:44.794951"
+                                }"""))
                 .andExpect(status().isOk());
     }
 
@@ -116,11 +107,11 @@ class ProductControllerTest {
         mockMvc.perform(post("/products/mistake")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                        {
-                                        "name":"Banana",
-                                        "price":"100",
-                                        "creationDate":"2022-06-16T00:14:44.794951"
-                                        }"""))
+                                {
+                                "name":"Banana",
+                                "price":"100",
+                                "creationDate":"2022-06-16T00:14:44.794951"
+                                }"""))
                 .andExpect(status().isMethodNotAllowed());
     }
 
@@ -131,7 +122,7 @@ class ProductControllerTest {
                 .thenReturn(product);
 
         mockMvc.perform(get("/products/1")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Banana"))
                 .andExpect(jsonPath("$.price").value("100.0"))
