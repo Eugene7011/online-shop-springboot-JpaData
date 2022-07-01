@@ -1,0 +1,13 @@
+PRODUCTS:
+  - ID: 1
+    NAME: "Banana"
+    PRICE: "100.0"
+    CREATION_DATE: '2111-01-01 00:00:00.000000'
+  - ID: 2
+    NAME: "Apple"
+    PRICE: "200.0"
+    CREATION_DATE: '2111-01-01 00:00:00.000000'
+  - ID: 3
+    NAME: "Cheese"
+    PRICE: "120.0"
+    CREATION_DATE: '2111-01-01 00:00:00.000000'
