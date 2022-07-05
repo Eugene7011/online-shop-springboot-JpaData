@@ -19,7 +19,7 @@ public class Product {
             sequenceName = "product_id_seq",
             allocationSize = 1
     )
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private String name;

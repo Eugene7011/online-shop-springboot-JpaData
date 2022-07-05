@@ -24,14 +24,14 @@ public class ProductControllerSystemTest {
     private MockMvc mockMvc;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
     @Test
     public void allProductsFromDatabaseAreAvailableOnWeb() throws Exception {
         mockMvc.perform(get("/products")
-                .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 

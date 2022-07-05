@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -119,7 +120,7 @@ class ProductControllerTest {
     @DisplayName("when Find Product By Valid Id Status OK And Correct Product Should Return")
     void when_Find_Product_By_Valid_Id_Status_OK_And_Correct_Product_Should_Return() throws Exception {
         Mockito.when(productService.findById(1))
-                .thenReturn(product);
+                .thenReturn(Optional.ofNullable(product));
 
         mockMvc.perform(get("/products/1")
                         .contentType(MediaType.APPLICATION_JSON))

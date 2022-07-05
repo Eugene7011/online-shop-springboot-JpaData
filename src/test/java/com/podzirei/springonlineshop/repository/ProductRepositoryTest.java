@@ -4,7 +4,6 @@ import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.spring.api.DBRider;
 import com.podzirei.springonlineshop.entity.Product;
-import com.podzirei.springonlineshop.error.ProductNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DBRider
@@ -66,10 +65,26 @@ class ProductRepositoryTest {
 
     @Test
     @DataSet("stored_products.yml")
-    @ExpectedDataSet("stored_products.yml")
     @DisplayName("when Find By Name then Return Product")
     public void whenFindByNameThenReturnProduct() {
-        productRepository.findByName("Banana").get(0);
+        Product expectedProduct = productRepository.findProductByName("Banana").get(0);
+
+        assertEquals(expectedProduct.getPrice(), 100.0);
+        assertEquals(expectedProduct.getName(), "Banana");
+    }
+
+    @Test
+    @DataSet("stored_products.yml")
+    @DisplayName("when Find Product By Invalid Name then Return Empty List")
+    public void whenFindProductByInvalidNamethenReturnEmptyList() {
+        assertEquals(0, productRepository.findProductByName("Error").size());
+    }
+
+    @Test
+    @DataSet("stored_products.yml")
+    @DisplayName("when Find Product By Invalid Id then Return Empty Result")
+    public void whenFindProductByInvalidIdthenReturnEmptyResult() {
+        assertEquals(Optional.empty(), productRepository.findById(4));
     }
 
     @Test
